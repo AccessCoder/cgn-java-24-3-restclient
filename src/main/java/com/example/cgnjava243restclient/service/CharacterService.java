@@ -2,6 +2,7 @@ package com.example.cgnjava243restclient.service;
 
 import com.example.cgnjava243restclient.model.RickAndMortyChar;
 import com.example.cgnjava243restclient.model.RickAndMortyResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -13,9 +14,9 @@ public class CharacterService {
 
     private final RestClient restClient;
 
-    public CharacterService() {
+    public CharacterService(@Value("${RICK_URL}") String baseUrl) {
         this.restClient = RestClient.builder()
-                .baseUrl("https://rickandmortyapi.com/api")
+                .baseUrl(baseUrl)
                 .build();
     }
 
@@ -30,5 +31,12 @@ public class CharacterService {
             throw new IOException("No Data Found");
         }
 
+    }
+
+    public RickAndMortyChar getRickAndMortyCharById(int id) {
+        return restClient.get()
+                .uri("/character/"+id)
+                .retrieve()
+                .body(RickAndMortyChar.class);
     }
 }
