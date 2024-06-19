@@ -27,26 +27,26 @@ class CharacterControllerTest {
 
     private static MockWebServer mockWebServer;
 
-    @BeforeAll
+    @BeforeAll //Kennzeichnet Methoden die ausgeführt werden bevor die Tests starten.
     static void setup() throws IOException {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
     }
 
-    @AfterAll
+    @AfterAll //Kennzeichnet Methoden die ausgeführt werden, nachdem die Tests durchgelaufen sind.
     static void shutDown() throws IOException {
         mockWebServer.shutdown();
     }
 
-    @DynamicPropertySource
-    static void backendProps(DynamicPropertyRegistry registry){
+    @DynamicPropertySource //Gibt uns die Möglichkeit Umgebungsvariablen zu überschreiben
+    static void backendProps(DynamicPropertyRegistry registry){ //<- DynamicPropertyRegistry muss übergeben werden!
         registry.add("RICK_URL", () -> mockWebServer.url("/").toString());
     }
 
     @Test
     void getRickAndMortyCharById_shouldReturnRickSanchez_whenCalledWithId1() throws Exception {
         //GIVEN
-        mockWebServer.enqueue(new MockResponse()
+        mockWebServer.enqueue(new MockResponse() // <- Wir stellen eine Response in die "Warteschlange", der Mockwebserver gibt sie bei erster Möglichkeit zurück!
                 .addHeader("Content-Type", "application/json")
                 .setBody("""
                         {

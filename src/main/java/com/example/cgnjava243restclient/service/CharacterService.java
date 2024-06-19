@@ -14,6 +14,7 @@ public class CharacterService {
 
     private final RestClient restClient;
 
+    //Wir lagern die URL in die Environment Variablen aus und lassen sie durch die @Value Annotation (von Spring, NICHT lombok) auslesen!
     public CharacterService(@Value("${RICK_URL}") String baseUrl) {
         this.restClient = RestClient.builder()
                 .baseUrl(baseUrl)
