@@ -1,5 +1,6 @@
 package com.example.cgnjava243restclient.service;
 
+import com.example.cgnjava243restclient.exceptions.InvalidIdException;
 import com.example.cgnjava243restclient.model.RickAndMortyChar;
 import com.example.cgnjava243restclient.model.RickAndMortyResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +35,13 @@ public class CharacterService {
 
     }
 
-    public RickAndMortyChar getRickAndMortyCharById(int id) {
-        return restClient.get()
-                .uri("/character/"+id)
-                .retrieve()
-                .body(RickAndMortyChar.class);
+    public RickAndMortyChar getRickAndMortyCharById(int id) throws InvalidIdException {
+        if (id <= 826){
+            return restClient.get()
+                    .uri("/character/"+id)
+                    .retrieve()
+                    .body(RickAndMortyChar.class);
+        }else throw new InvalidIdException("No Character found with id: " + id);
+
     }
 }

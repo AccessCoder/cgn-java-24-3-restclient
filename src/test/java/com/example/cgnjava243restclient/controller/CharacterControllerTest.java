@@ -50,42 +50,21 @@ class CharacterControllerTest {
                 .addHeader("Content-Type", "application/json")
                 .setBody("""
                         {
-                             "id": 1,
-                             "name": "Rick Sanchez",
-                             "status": "Alive",
-                             "species": "Human",
-                             "type": "",
-                             "gender": "Male",
-                             "origin": {
-                                 "name": "Earth (C-137)",
-                                 "url": "https://rickandmortyapi.com/api/location/1"
-                             },
-                             "location": {
-                                 "name": "Citadel of Ricks",
-                                 "url": "https://rickandmortyapi.com/api/location/3"
-                             },
-                             "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                             "episode": [
-                                 "https://rickandmortyapi.com/api/episode/1"
-                                 
-                             ],
-                             "url": "https://rickandmortyapi.com/api/character/1",
-                             "created": "2017-11-04T18:48:46.250Z"
                          }
                        
                         """));
         //WHEN & THEN
-        mvc.perform(MockMvcRequestBuilders.get("/api/char/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+        mvc.perform(MockMvcRequestBuilders.get("/api/char/10000"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().json("""
                         {
-                           "id": 1,
-                           "name": "Rick Sanchez",
-                           "status": "Alive",
-                           "species": "Human",
-                           "gender": "Male" 
+                            "apiPath": "uri=/api/char/10000",
+                            "errorCode": "NOT_FOUND",
+                            "errorMsg": "No Character found with id: 10000"
+                            
                         }
-                        """));
+                        """))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errorTime").isNotEmpty());
     }
 
 }
